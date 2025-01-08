@@ -1,6 +1,6 @@
 import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 
 import { AppController } from './app.controller';
@@ -16,7 +16,15 @@ import { ResponseInterceptor } from './interceptors/response.interceptor';
     ConfigModule.forRoot({
       isGlobal: true
     }),
-    MongooseModule.forRoot('mongodb://localhost:27017/currency_flow'),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule], 
+      useFactory: async (configService: ConfigService) => {
+        return {
+          uri: `${configService.get<string>('DATABASE_URL')}${configService.get<string>('DATABASE_NAME')}`
+        };
+      },
+      inject: [ConfigService]
+    }),
     UsersModule,
     AuthModule,
     CurrenciesModule
@@ -33,7 +41,8 @@ export class AppModule {
       .apply(AuthGuard)
       .exclude(
         { path: '/auth/login', method: RequestMethod.POST },
-        { path: '/auth/register', method: RequestMethod.POST }
+        { path: '/auth/register', method: RequestMethod.POST },
+        { path: '/currencies/exchange-rate', method: RequestMethod.GET }
       )
       .forRoutes('*');
   }
