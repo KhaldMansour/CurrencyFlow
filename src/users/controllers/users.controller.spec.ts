@@ -1,13 +1,14 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UsersController } from './users.controller';
-import { UsersService } from '../services/users.service';
-import { Transaction } from 'src/currencies/entities/transaction.entity';
 import { Request as ExpressRequest } from 'express';
 import { Types } from 'mongoose';
+
+import { UsersService } from '../services/users.service';
 import { User } from '../entities/user.entity';
 
+import { UsersController } from './users.controller';
+
 const mockUsersService = {
-  getTransactionHistory: jest.fn(),
+  getTransactionHistory: jest.fn()
 };
 
 const mockUser: User = {
@@ -15,7 +16,7 @@ const mockUser: User = {
   firstName: 'John',
   lastName: 'Doe',
   email: 'john.doe@example.com',
-  password: 'hashed-password',
+  password: 'hashed-password'
 };
 
 describe('UsersController', () => {
@@ -28,9 +29,9 @@ describe('UsersController', () => {
       providers: [
         {
           provide: UsersService,
-          useValue: mockUsersService,
-        },
-      ],
+          useValue: mockUsersService
+        }
+      ]
     }).compile();
 
     usersController = module.get<UsersController>(UsersController);
@@ -41,11 +42,11 @@ describe('UsersController', () => {
     it('should return transaction history for the current user', async () => {
       const mockTransactions= [
         { _id: 'transaction-id-1', amount: 100, type: 'credit', userId: 'mock-user-id' },
-        { _id: 'transaction-id-2', amount: 50, type: 'debit', userId: 'mock-user-id' },
+        { _id: 'transaction-id-2', amount: 50, type: 'debit', userId: 'mock-user-id' }
       ];
       mockUsersService.getTransactionHistory.mockResolvedValue(mockTransactions);
       const mockRequest = {
-        user: mockUser,
+        user: mockUser
       }  as ExpressRequest;
 
       const result = await usersController.history(mockRequest);
@@ -58,7 +59,7 @@ describe('UsersController', () => {
       const errorMessage = 'Error fetching transaction history';
       mockUsersService.getTransactionHistory.mockRejectedValue(new Error(errorMessage));
       const mockRequest = {
-        user: mockUser,
+        user: mockUser
       }  as ExpressRequest;
 
       try {

@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthController } from './auth.controller';
+import { User } from 'src/users/entities/user.entity';
+import { Types } from 'mongoose';
+
 import { AuthService } from '../services/auth.service';
 import { RegisterUserDto } from '../dtos/register-user.dto';
 import { LoginDto } from '../dtos/login.dto';
-import { User } from 'src/users/entities/user.entity';
-import { Types } from 'mongoose';
+
+import { AuthController } from './auth.controller';
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -12,7 +14,7 @@ describe('AuthController', () => {
 
   const mockAuthService = {
     register: jest.fn(),
-    login: jest.fn(),
+    login: jest.fn()
   };
 
   beforeEach(async () => {
@@ -21,9 +23,9 @@ describe('AuthController', () => {
       providers: [
         {
           provide: AuthService,
-          useValue: mockAuthService,
-        },
-      ],
+          useValue: mockAuthService
+        }
+      ]
     }).compile();
 
     authController = module.get<AuthController>(AuthController);
@@ -36,14 +38,14 @@ describe('AuthController', () => {
         email: 'khaldmansour93@gmail.com',
         password: 'password123',
         firstName: 'Khaled',
-        lastName: 'Mansour',
+        lastName: 'Mansour'
       };      
       const mockUser: User = {
         _id: new Types.ObjectId('60db69d010f5b2d1a8a5fbd3'),
         email: 'khaldmansour93@gmail.com',
         firstName: 'Khaled',
         lastName: 'Mansour',
-        password: 'hashed-password',
+        password: 'hashed-password'
       };
       mockAuthService.register.mockResolvedValue(mockUser);
 
@@ -58,7 +60,7 @@ describe('AuthController', () => {
     it('should call AuthService.login and return an access token', async () => {
       const loginDto: LoginDto = {
         email: 'khaldmansour93@gmail.com',
-        password: 'password123',
+        password: 'password123'
       };
       const mockAccessToken = 'mock-jwt-token';
       mockAuthService.login.mockResolvedValue({ access_token: mockAccessToken });

@@ -5,10 +5,10 @@ import {
   Request
 } from '@nestjs/common';
 import { Request as ExpressRequest } from 'express';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { CurrenciesService } from '../services/currencies.service';
 import { CurrencyConversionRequestDto } from '../dto/currency-conversion.request.dto';
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('currencies')
 export class CurrenciesController {

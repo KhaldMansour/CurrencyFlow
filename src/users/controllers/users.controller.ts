@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { Transaction } from 'src/currencies/entities/transaction.entity';
 import { Request as ExpressRequest } from 'express';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 import { UsersService } from '../services/users.service';
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('users')
 export class UsersController {

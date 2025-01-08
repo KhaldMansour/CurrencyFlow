@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { CurrenciesController } from './currencies.controller';
-import { CurrenciesService } from '../services/currencies.service';
-import { CurrencyConversionRequestDto } from '../dto/currency-conversion.request.dto';
 import { Request } from 'express';
 import { User } from 'src/users/entities/user.entity';
 import { Types } from 'mongoose';
+
+import { CurrencyConversionRequestDto } from '../dto/currency-conversion.request.dto';
+import { CurrenciesService } from '../services/currencies.service';
+
+import { CurrenciesController } from './currencies.controller';
 
 jest.mock('../services/currencies.service');
 
@@ -13,7 +15,7 @@ const mockUser: User = {
   email: 'khaldmansour93@gmail.com',
   firstName: 'Khaled',
   lastName: 'Mansour',
-  password: 'hashed-password',
+  password: 'hashed-password'
 };
 
 describe('CurrenciesController', () => {
@@ -28,10 +30,10 @@ describe('CurrenciesController', () => {
           provide: CurrenciesService,
           useValue: {
             getExchangeRate: jest.fn(),
-            convert: jest.fn(),
-          },
-        },
-      ],
+            convert: jest.fn()
+          }
+        }
+      ]
     }).compile();
 
     currenciesController = module.get<CurrenciesController>(CurrenciesController);
@@ -47,7 +49,7 @@ describe('CurrenciesController', () => {
       const mockConvertedAmount = 85;
       currenciesService.convert = jest.fn().mockResolvedValue({ convertedAmount: mockConvertedAmount });
       const mockRequest = {
-        user: mockUser,
+        user: mockUser
       } as Request;
 
       const result = await currenciesController.create(mockConversionData, mockRequest);
