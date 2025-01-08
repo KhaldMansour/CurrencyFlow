@@ -35,6 +35,8 @@ async function bootstrap(): Promise<void> {
     }
   });
 
+  app.enableCors();
+
   await app.listen(3000);
 }
 bootstrap();
