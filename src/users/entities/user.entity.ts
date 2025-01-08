@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, Date, HydratedDocument, ObjectId } from 'mongoose';
+import { Document, Date, HydratedDocument , Types } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 
-@Schema({ versionKey: false })
+@Schema()
 export class User {
-  _id: ObjectId;
+  _id: Types.ObjectId;
 
   @Expose()
   @Prop({ required: true })
