@@ -14,10 +14,10 @@ jest.mock('axios');
 
 const user: User = {
   _id: new Types.ObjectId('60db69d010f5b2d1a8a5fbd3'),
-  firstName: 'John',
-  lastName: 'Doe',
+  firstName: 'Khaled',
+  lastName: 'Mansour',
   password: 'password',
-  email: 'john.doe@example.com'
+  email: 'khaldmansour93@gmail.com'
 }; 
 
 describe('CurrenciesService', () => {

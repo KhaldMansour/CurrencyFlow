@@ -1,22 +1,72 @@
 import { Test, TestingModule } from '@nestjs/testing';
-
-import { AuthService } from '../services/auth.service';
-
 import { AuthController } from './auth.controller';
+import { AuthService } from '../services/auth.service';
+import { RegisterUserDto } from '../dtos/register-user.dto';
+import { LoginDto } from '../dtos/login.dto';
+import { User } from 'src/users/entities/user.entity';
+import { Types } from 'mongoose';
 
 describe('AuthController', () => {
-  let controller: AuthController;
+  let authController: AuthController;
+  let authService: AuthService;
+
+  const mockAuthService = {
+    register: jest.fn(),
+    login: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [AuthController],
-      providers: [AuthService]
+      providers: [
+        {
+          provide: AuthService,
+          useValue: mockAuthService,
+        },
+      ],
     }).compile();
 
-    controller = module.get<AuthController>(AuthController);
+    authController = module.get<AuthController>(AuthController);
+    authService = module.get<AuthService>(AuthService);
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  describe('register', () => {
+    it('should call AuthService.register and return a user', async () => {
+      const registerUserDto: RegisterUserDto = {
+        email: 'khaldmansour93@gmail.com',
+        password: 'password123',
+        firstName: 'Khaled',
+        lastName: 'Mansour',
+      };      
+      const mockUser: User = {
+        _id: new Types.ObjectId('60db69d010f5b2d1a8a5fbd3'),
+        email: 'khaldmansour93@gmail.com',
+        firstName: 'Khaled',
+        lastName: 'Mansour',
+        password: 'hashed-password',
+      };
+      mockAuthService.register.mockResolvedValue(mockUser);
+
+      const result = await authController.register(registerUserDto);
+
+      expect(mockAuthService.register).toHaveBeenCalledWith(registerUserDto);
+      expect(result).toEqual(mockUser);
+    });
+  });
+
+  describe('login', () => {
+    it('should call AuthService.login and return an access token', async () => {
+      const loginDto: LoginDto = {
+        email: 'khaldmansour93@gmail.com',
+        password: 'password123',
+      };
+      const mockAccessToken = 'mock-jwt-token';
+      mockAuthService.login.mockResolvedValue({ access_token: mockAccessToken });
+
+      const result = await authController.login(loginDto);
+
+      expect(mockAuthService.login).toHaveBeenCalledWith(loginDto);
+      expect(result).toEqual({ access_token: mockAccessToken });
+    });
   });
 });

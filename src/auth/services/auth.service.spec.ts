@@ -62,9 +62,9 @@ describe('AuthService', () => {
   describe('register', () => {
     it('should successfully register a new user', async () => {
       const registerUserDto: RegisterUserDto = {
-        firstName: 'John',
-        lastName: 'Doe',
-        email: 'john.doe@example.com',
+        firstName: 'Khaled',
+        lastName: 'Mansour',
+        email: 'khaldmansour93@gmail.com',
         password: 'password123'
       };
       const { password, ...userData } = registerUserDto;
@@ -87,12 +87,12 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should return an access token if credentials are correct', async () => {
       const loginDto = {
-        email: 'john.doe@example.com',
+        email: 'khaldmansour93@gmail.com',
         password: 'password123'
       };
       const user = {
         _id: 'mock-user-id',
-        email: 'john.doe@example.com',
+        email: 'khaldmansour93@gmail.com',
         password: 'hashed-password'
       };
       userModel.findOne.mockResolvedValue(user); 
@@ -116,7 +116,7 @@ describe('AuthService', () => {
 
     it('should throw UnauthorizedException if user is not found', async () => {
       const loginDto: LoginDto = {
-        email: 'john.doe@example.com',
+        email: 'khaldmansour93@gmail.com',
         password: 'password123'
       };
 
@@ -127,15 +127,15 @@ describe('AuthService', () => {
       );
     });
 
-    it('should throw UnauthorizedException if password does not match', async () => {
+    it('should throw UnauthorizedException if password Mansours not match', async () => {
       const loginDto: LoginDto = {
-        email: 'john.doe@example.com',
+        email: 'khaldmansour93@gmail.com',
         password: 'password123'
       };
 
       const user = {
         _id: 'mock-user-id',
-        email: 'john.doe@example.com',
+        email: 'khaldmansour93@gmail.com',
         password: 'hashed-password'
       };
 
@@ -153,7 +153,7 @@ describe('AuthService', () => {
       const mockToken = 'mock-jwt-token';
       const decodedPayload = {
         userId: 'mock-user-id',
-        email: 'john.doe@example.com'
+        email: 'khaldmansour93@gmail.com'
       };
       mockJwtService.verifyAsync.mockResolvedValue(decodedPayload);
 
