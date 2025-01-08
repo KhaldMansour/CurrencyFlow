@@ -8,6 +8,7 @@ import { Request as ExpressRequest } from 'express';
 
 import { CurrenciesService } from '../services/currencies.service';
 import { CurrencyConversionRequestDto } from '../dto/currency-conversion.request.dto';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('currencies')
 export class CurrenciesController {
@@ -18,6 +19,7 @@ export class CurrenciesController {
     return this.currenciesService.getExchangeRate(currency);
   }
 
+  @ApiBearerAuth('JWT')
   @Get('convert')
   async create(
     @Query() data: CurrencyConversionRequestDto,
